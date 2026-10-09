@@ -15,3 +15,7 @@ Executed locally:
 Browser verification: the standalone Playwright command was executed but Chrome exited with SIGABRT/EPERM before either test ran. Do not interpret this as passing automated E2E. Codex's in-app browser successfully loaded the live terminal, navigated all ten other views and simulated an unsigned securities approval. Responsive checks and screenshots are recorded separately in browser-verification.json.
 
 Unavailable/unexecuted: standalone PostgreSQL server integration (Docker unavailable), remote GitHub CI, Echidna, independent audit and wallet-extension signature UI. Foundry supplies stateful fuzzing; Echidna is optional and has not been represented as run. Local Foundry is 1.3.5-nightly; CI is pinned to stable 1.3.1 and has not been run remotely.
+
+## Besu / Polygon CDK deployment profile
+
+On October 9, 2026, the Paris-targeted `portable` Foundry profile passed all 54 contract tests (9 suites, zero failures). Every Bash block in the advanced deployment guide passed `bash -n`. The Docker-based Besu/CDK network, signed deployment recipe and bridge operation have not been executed on this host. The recipe was checked against the current constructor and role signatures and local Foundry CLI options.

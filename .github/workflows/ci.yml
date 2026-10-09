@@ -19,6 +19,9 @@ jobs:
           version: v1.3.1
       - run: npm ci --ignore-scripts && npm ci --prefix contracts --ignore-scripts
       - run: make check
+      - name: Portable Besu/CDK bytecode tests
+        run: FOUNDRY_PROFILE=portable forge test
+        working-directory: contracts
       - run: forge coverage
         working-directory: contracts
       - uses: actions/setup-python@v5

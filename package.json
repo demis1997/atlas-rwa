@@ -1,0 +1,42 @@
+{
+  "name": "atlas-rwa",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "contracts:build": "cd contracts && forge build",
+    "contracts:test": "cd contracts && forge test",
+    "typecheck": "tsc --noEmit",
+    "test:backend": "tsx --test indexer/src/*.test.ts",
+    "api": "tsx apps/api/src/server.ts",
+    "demo": "tsx scripts/demo.ts",
+    "web": "next dev apps/web --hostname 127.0.0.1",
+    "build:web": "next build apps/web",
+    "typecheck:web": "tsc --noEmit -p apps/web/tsconfig.json",
+    "test:e2e": "playwright test",
+    "demo:redeem": "tsx scripts/demo.ts --redeem"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "ethers": "6.17.0",
+    "fastify": "5.12.5",
+    "next": "16.4.0",
+    "pg": "8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "22.20.5",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "prettier": "3.9.9",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.20.0"
+  }
+}

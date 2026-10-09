@@ -1,0 +1,13 @@
+# ADR 006 — PostgreSQL event ledger and local custody boundary
+
+Fastify serves a strict TypeScript API; ethers handles RPC/ABI encoding. PostgreSQL holds canonical blocks, decoded logs, transactions, synthetic investor metadata and preparation audit records. The local profile uses PGlite (PostgreSQL compiled to WASM); DATABASE_URL selects a normal PostgreSQL server. PGlite is a development adapter, not a claim of server integration coverage.
+
+Indexer identity is chain ID + block hash + transaction hash + log index. Every block is retained, including empty blocks. On a differing tip, walk back to a common ancestor, atomically remove orphan logs/blocks, mark transactions reorganized and replay up to 250 blocks. Parent linkage and final tip are rechecked before commit. Two descendant blocks are used for local confirmation; this is not irreversible financial finality. Deep reorgs remain reversible. A single in-process queue owns the database connection; do not run multiple writers without advisory locking and a separate connection pool.
+
+Reconciliation folds all token Transfer logs and compares every recorded holder and total supply against on-chain balances at the indexed block. No token amount uses floating point. UI euro formatting is presentation only. API snapshots expose their indexed and confirmed heights.
+
+The API prepares and simulates unsigned allowlisted commands. It holds no keys and never broadcasts. Wallet or custody adapters authorize, sign and broadcast. Quorum Custody could implement that interface behind organization policy; no unverified vendor API is assumed. API binding is loopback; external hosting would require authentication, authorization, CSRF/origin controls, rate limiting and deployment hardening. Prepared transaction audit records do not prove the supplied from-address controls a key.
+
+Current limitations: synthetic investor profiles are seeded and new identity wallets are discovered from indexed registry events; registration/attestation transactions can be prepared in the terminal; ABI encoding is a low-level preparation interface; finality depth is local-specific; logs without recognized ABI are ignored; a full historical scan is suitable only for this local reference.
+
+Prepared instructions are invalidated when sender, action or field values change. A revision counter prevents an in-flight simulation response from publishing a stale instruction after an edit. Boolean administration inputs must explicitly be true or false. Wallet confirmation still reviews the exact encoded transaction; simulation success does not guarantee later inclusion.

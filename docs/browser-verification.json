@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-09",
+  "engine": "Codex in-app browser",
+  "checks": [
+    "Assets: rendered",
+    "Issuance: rendered",
+    "Investors: rendered",
+    "Compliance: rendered",
+    "Subscriptions: rendered",
+    "Settlement: rendered",
+    "Corporate Actions: rendered",
+    "Transactions: rendered",
+    "Audit Trail: rendered",
+    "Settings: rendered",
+    "Overview: live data rendered",
+    "Unsigned securities approval: simulation passed",
+    "Redemption: Redeemed state, zero outstanding units",
+    "Mobile viewport 390x844: document width 390, no horizontal overflow",
+    "Final build: preparation passes and editing quantity invalidates prior instruction"
+  ],
+  "screenshots": [
+    "terminal-desktop.jpg",
+    "redeemed-desktop.jpg",
+    "terminal-mobile.jpg"
+  ],
+  "standalonePlaywright": "Chrome launch blocked by host sandbox; not passed"
+}

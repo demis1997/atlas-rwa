@@ -1,0 +1,22 @@
+'forge clean' running (wd: /Users/demis/Documents/Codex/2026-10-09/files-pasted-by-the-user-atlas/outputs/atlas-rwa/contracts)
+'forge config --json' running
+'forge build --build-info --skip ./test/** ./script/** --force' running (wd: /Users/demis/Documents/Codex/2026-10-09/files-pasted-by-the-user-atlas/outputs/atlas-rwa/contracts)
+INFO:Detectors:
+Compliance.canTransfer(address,address,address,uint256) (src/Compliance.sol#37-43) has external calls inside a loop: ! rules[i].check(token,from,to,amount) (src/Compliance.sol#40)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+INFO:Detectors:
+LockupRule.check(address,address,address,uint256) (src/Compliance.sol#98-100) uses timestamp for comparisons
+	Dangerous comparisons:
+	- from == address(0) || block.timestamp >= releaseTime (src/Compliance.sol#99)
+IdentityRegistry.attest(bytes32,uint256,uint64,bytes32) (src/IdentityRegistry.sol#74-81) uses timestamp for comparisons
+	Dangerous comparisons:
+	- subjectWallet[subject] == address(0) || expiresAt <= block.timestamp || evidenceHash == bytes32(0) (src/IdentityRegistry.sol#76)
+IdentityRegistry.isVerified(address) (src/IdentityRegistry.sol#113-121) uses timestamp for comparisons
+	Dangerous comparisons:
+	- claim.expiresAt <= block.timestamp || ! trustedIssuer[claim.issuer][requiredTopics[i]] (src/IdentityRegistry.sol#118)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Detectors:
+Loop condition i < rules.length (src/Compliance.sol#39) should use cached array length instead of referencing `length` member of the storage array.
+ Loop condition i < requiredTopics.length (src/IdentityRegistry.sol#116) should use cached array length instead of referencing `length` member of the storage array.
+ Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#cache-array-length
+INFO:Slither:. analyzed (26 contracts with 100 detectors), 6 result(s) found

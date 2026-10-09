@@ -1,0 +1,82 @@
+[
+  {
+    "step": "Create bond via factory",
+    "transaction": "0x5c62866dde4db1f9bba25e14f1159ab536b609115610ab23ca58b8fe4c311af8"
+  },
+  {
+    "step": "Attest synthetic investor",
+    "transaction": "0xa744a9a8d05a436770a9394bf0f66a8eaaef9fdb004413ba426028ea38dfd9ee"
+  },
+  {
+    "step": "Attest synthetic investor",
+    "transaction": "0x42a791cf5a58283110ce8a80d0d71373d7daaf2d04b025e8b3a659ad0f9acabf"
+  },
+  {
+    "step": "Attest synthetic investor",
+    "transaction": "0x742ad312fa9942682121427ef1f1431b0652ce141e8ef4782cd91042d31bda3c"
+  },
+  {
+    "step": "Approve offering",
+    "transaction": "0xdd923c9edef5ec692529ff4d3c9024c7354d195a621916aec479a147f6823ada"
+  },
+  {
+    "step": "Open subscriptions",
+    "transaction": "0x3d49efbfd8a972deca8a6a5d68756b3b9caf718cc8201c5fbe6fa7353a1aff72"
+  },
+  {
+    "step": "Subscribe 5000 bonds",
+    "transaction": "0xb0ed4f4271029f2baa87d211cd920db7357281630e49c62fa3b055633cd9001d"
+  },
+  {
+    "step": "Subscribe 5000 bonds",
+    "transaction": "0xfd414de5fcf852be6e7119d12708eed5e10078e165565a2758f6593f192b7de6"
+  },
+  {
+    "step": "Reject restricted jurisdiction",
+    "expectedRejection": true
+  },
+  {
+    "step": "Settle primary allocation",
+    "transaction": "0x303d70cf7bdf3304b9ef3fdd76d68f3d4a42a405a89ca813647fe1568657ff83"
+  },
+  {
+    "step": "Settle primary allocation",
+    "transaction": "0x2d0e741966a59764ccaeb990eff0ff4b1d8e1d3dd99f0e888c78a22e6ce898d9"
+  },
+  {
+    "step": "Secondary transfer",
+    "transaction": "0xeae226e16aad22e054ce177b1065b68946c44a44411d35708caa1046d96c7356"
+  },
+  {
+    "step": "Reject restricted transfer",
+    "expectedRejection": true
+  },
+  {
+    "step": "Atomic rollback without cash approval",
+    "expectedRejection": true
+  },
+  {
+    "step": "Atomic DvP settlement",
+    "transaction": "0x2779a54137c140e99466cd1e0634d77d5d4280f8d9937919b05898015c793857"
+  },
+  {
+    "step": "Record and fund annual 5% coupon",
+    "transaction": "0x4bdd53eb28611c4d457c068e6abcddd64dca176baf7a5c4122a3ab1ffc87c458"
+  },
+  {
+    "step": "Claim historical coupon",
+    "transaction": "0x2d59aef023fc104f87b624e2fd9c7577ed8af539e94c1359de31281898fe6daa"
+  },
+  {
+    "step": "Claim historical coupon",
+    "transaction": "0x8819ed5e2b950d610d26b89fc7c402a0267fbd5132b6127a072f64cbaddb71ce"
+  },
+  {
+    "step": "Reject duplicate coupon claim",
+    "expectedRejection": true
+  },
+  {
+    "step": "Prefund principal redemption",
+    "transaction": "0x083032cc4f743bbd7d3b699dd389f4af9ff59dd49260eec18c2f5a9e74ac9b2a"
+  }
+]

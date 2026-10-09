@@ -1,0 +1,18 @@
+[
+  {
+    "step": "Mature bond at simulated 2030-12-31",
+    "transaction": "0x100ea044a6c5a7b803b74afa7bec0844c906f488b340aa370f20ca8c1929df1e"
+  },
+  {
+    "step": "Redeem principal and burn securities",
+    "transaction": "0x0acb0db51cba72d89066e440c780d5b2844ddee1b15569ef1c76a61bc36eaa62"
+  },
+  {
+    "step": "Redeem principal and burn securities",
+    "transaction": "0xb2159aabf83fe57ef7f54a97511046e756e982301ae0167bfbe73b10f5681123"
+  },
+  {
+    "step": "Mark redeemed",
+    "transaction": "0x2a15e1555a7de6a114171362937b44407dd575db3058e07be30487f6d3574fb6"
+  }
+]

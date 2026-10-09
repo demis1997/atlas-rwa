@@ -1,0 +1,106 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.30;
+
+import {CoreFixture} from "./Core.t.sol";
+import {BondOffering} from "../src/BondOffering.sol";
+import {MockEUR} from "../src/MockEUR.sol";
+import {DvP} from "../src/DvP.sol";
+import {CorporateActions} from "../src/CorporateActions.sol";
+
+contract BondLifecycleTest is CoreFixture {
+    event LifecycleEvidence(string action, uint256 securitySupply, uint256 cashAmount);
+
+    function testTenMillionBondLifecycle() public {
+        MockEUR eur = new MockEUR();
+        // 2030-12-31T00:00:00Z, explicitly simulated later with warp.
+        BondOffering offering = new BondOffering(token, eur, ADMIN, ISSUER, OFFICER, ISSUER, 1000e6, 1924905600);
+        CorporateActions actions = new CorporateActions(offering, ADMIN, AGENT);
+        DvP dvp = new DvP(token, eur);
+        bytes32 issuerRole = token.ISSUER_ROLE();
+        bytes32 redeemRole = token.REDEEMER_ROLE();
+        vm.startPrank(ADMIN);
+        token.grantRole(issuerRole, address(offering));
+        token.revokeRole(issuerRole, ISSUER);
+        token.grantRole(redeemRole, address(actions));
+        vm.stopPrank();
+        vm.prank(OFFICER);
+        offering.approveOffering();
+        vm.prank(ISSUER);
+        offering.open();
+        eur.faucet(ALICE, 5000000e6);
+        eur.faucet(BOB, 5000000e6);
+        vm.startPrank(ALICE);
+        eur.approve(address(offering), 5000000e6);
+        offering.subscribe(5000);
+        vm.stopPrank();
+        vm.startPrank(BOB);
+        eur.approve(address(offering), 5000000e6);
+        offering.subscribe(5000);
+        vm.stopPrank();
+        vm.expectRevert();
+        vm.prank(CHARLIE);
+        offering.subscribe(1);
+        vm.startPrank(ISSUER);
+        offering.close();
+        offering.allocate(ALICE, 5000);
+        offering.allocate(BOB, 5000);
+        vm.stopPrank();
+        offering.settle(ALICE);
+        offering.settle(BOB);
+        vm.startPrank(ISSUER);
+        offering.finalize();
+        offering.activate();
+        vm.stopPrank();
+        require(token.totalSupply() == 10000 && eur.balanceOf(ISSUER) == 10000000e6 && offering.escrowLiability() == 0);
+        emit LifecycleEvidence("issued", token.totalSupply(), eur.balanceOf(ISSUER));
+        vm.prank(ALICE);
+        token.transfer(BOB, 100);
+        vm.expectRevert();
+        vm.prank(ALICE);
+        token.transfer(CHARLIE, 1);
+        eur.faucet(ALICE, 200000e6);
+        vm.startPrank(BOB);
+        token.approve(address(dvp), 200);
+        uint256 trade = dvp.propose(ALICE, 200, 200000e6, 9999);
+        vm.stopPrank();
+        vm.startPrank(ALICE);
+        eur.approve(address(dvp), 200000e6);
+        dvp.accept(trade);
+        vm.stopPrank();
+        dvp.execute(trade);
+        require(token.balanceOf(ALICE) == 5100 && token.balanceOf(BOB) == 4900);
+        vm.roll(block.number + 1);
+        eur.faucet(AGENT, 10500000e6);
+        vm.startPrank(AGENT);
+        eur.approve(address(actions), 10500000e6);
+        uint256 coupon = actions.createDistribution(50e6);
+        actions.fundRedemption(10000000e6);
+        vm.stopPrank();
+        vm.prank(ALICE);
+        actions.claim(coupon);
+        vm.prank(BOB);
+        actions.claim(coupon);
+        vm.expectRevert();
+        vm.prank(ALICE);
+        actions.claim(coupon);
+        require(actions.distributionLiability() == 0);
+        emit LifecycleEvidence("coupon paid", token.totalSupply(), 500000e6);
+        vm.warp(1924905600);
+        offering.mature();
+        vm.startPrank(ATTESTER);
+        registry.attest(bytes32(uint256(10)), 1, 1956528000, keccak256("renewed synthetic Alice"));
+        registry.attest(bytes32(uint256(11)), 1, 1956528000, keccak256("renewed synthetic Bob"));
+        vm.stopPrank();
+        vm.startPrank(ALICE);
+        token.approve(address(actions), 5100);
+        actions.redeem(5100);
+        vm.stopPrank();
+        vm.startPrank(BOB);
+        token.approve(address(actions), 4900);
+        actions.redeem(4900);
+        vm.stopPrank();
+        offering.markRedeemed();
+        require(token.totalSupply() == 0 && actions.redemptionReserve() == 0 && eur.balanceOf(address(actions)) == 0);
+        emit LifecycleEvidence("redeemed and retired", token.totalSupply(), 10000000e6);
+    }
+}

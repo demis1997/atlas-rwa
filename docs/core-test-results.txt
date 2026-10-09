@@ -1,0 +1,69 @@
+Warning: This is a nightly build of Foundry. It is recommended to use the latest stable version. To mute this warning set `FOUNDRY_DISABLE_NIGHTLY_WARNING` in your environment. 
+
+Compiling 2 files with Solc 0.8.30
+Solc 0.8.30 finished in 795.25ms
+Compiler run successful!
+2026-10-09T11:35:32.863364Z  WARN traces::etherscan: etherscan config not found
+2026-10-09T11:35:32.865196Z  WARN forge::test: failed calling "targetArtifactSelectors()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865211Z  WARN forge::test: failed calling "targetArtifacts()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865219Z  WARN forge::test: failed calling "excludeArtifacts()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865236Z  WARN forge::test: failed calling "targetSenders()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865243Z  WARN forge::test: failed calling "excludeSenders()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865257Z  WARN forge::test: failed calling "excludeContracts()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865269Z  WARN forge::test: failed calling "targetInterfaces()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865276Z  WARN forge::test: failed calling "targetSelectors()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.865281Z  WARN forge::test: failed calling "excludeSelectors()": execution reverted: EvmError: Revert (gas: 21209)
+2026-10-09T11:35:32.888175Z  WARN evm::traces: failed to flush signature cache err=failed to create file "/Users/demis/.foundry/cache/signatures": Operation not permitted (os error 1)
+
+Ran 29 tests for test/Core.t.sol:CoreTest
+[PASS] testAdminNotOperational() (gas: 11506)
+[PASS] testExpired() (gas: 55681)
+[PASS] testFactoryCollision() (gas: 19166)
+[PASS] testFactoryUnauthorized() (gas: 16536)
+[PASS] testForcedTransferCannotBypassPolicy() (gas: 223636)
+[PASS] testForcedTransferSuccessAndDocument() (gas: 348113)
+[PASS] testFullFreezeRecipientAndSender() (gas: 253153)
+[PASS] testFuzzHoldingLimit(uint256) (runs: 256, μ: 152144, ~: 190044)
+[PASS] testFuzzJurisdictions(uint16) (runs: 256, μ: 198529, ~: 198529)
+[PASS] testFuzzTransferConservesSupply(uint256) (runs: 256, μ: 296401, ~: 296401)
+[PASS] testHoldingCap() (gas: 87764)
+[PASS] testIdentityCannotReassign() (gas: 15869)
+[PASS] testInvalidIssuer() (gas: 10790)
+[PASS] testInvalidTopicsAndRules() (gas: 20523)
+[PASS] testLifetimeCapCannotRemintBurns() (gas: 242046)
+[PASS] testLockup() (gas: 408829)
+[PASS] testNoRoleEscalation() (gas: 14338)
+[PASS] testPauseAndFreezeAllEntrypoints() (gas: 292867)
+[PASS] testRecoveryExpired() (gas: 281360)
+[PASS] testRecoveryPreservesFreezesAndSubject() (gas: 379071)
+[PASS] testRecoveryWrongSubject() (gas: 210146)
+[PASS] testRetiredWalletCannotBeReassigned() (gas: 90189)
+[PASS] testRevoked() (gas: 57883)
+[PASS] testTopicsRequireAllClaims() (gas: 350544)
+[PASS] testTransferAndAllowance() (gas: 302672)
+[PASS] testUnauthorizedMintAndRevocation() (gas: 22891)
+[PASS] testUntrustedIssuer() (gas: 63873)
+[PASS] testUnverified() (gas: 46292)
+[PASS] testWrongJurisdiction() (gas: 80649)
+Suite result: ok. 29 passed; 0 failed; 0 skipped; finished in 24.16ms (51.20ms CPU time)
+2026-10-09T11:35:33.073051Z  WARN evm::traces: failed to flush signature cache err=failed to create file "/Users/demis/.foundry/cache/signatures": Operation not permitted (os error 1)
+
+Ran 1 test for test/Invariant.t.sol:InvariantTest
+[PASS] invariantSupplyAndHoldings() (runs: 128, calls: 8192, reverts: 6467)
+
+╭----------+------------------+-------+---------+----------╮
+| Contract | Selector         | Calls | Reverts | Discards |
++==========================================================+
+| Handler  | burn             | 2000  | 1453    | 0        |
+|----------+------------------+-------+---------+----------|
+| Handler  | mint             | 2086  | 1367    | 0        |
+|----------+------------------+-------+---------+----------|
+| Handler  | transfer         | 1986  | 1527    | 0        |
+|----------+------------------+-------+---------+----------|
+| Handler  | unauthorizedMint | 2120  | 2120    | 0        |
+╰----------+------------------+-------+---------+----------╯
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 209.00ms (208.15ms CPU time)
+
+Ran 2 test suites in 209.99ms (233.16ms CPU time): 30 tests passed, 0 failed, 0 skipped (30 total tests)
+2026-10-09T11:35:33.078295Z  WARN evm::traces: failed to flush signature cache err=failed to create file "/Users/demis/.foundry/cache/signatures": Operation not permitted (os error 1)

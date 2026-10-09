@@ -1,0 +1,51 @@
+name: reference-verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            contracts/package-lock.json
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.3.1
+      - run: npm ci --ignore-scripts && npm ci --prefix contracts --ignore-scripts
+      - run: make check
+      - run: forge coverage
+        working-directory: contracts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install slither-analyzer==0.11.3
+      - run: slither . --filter-paths 'node_modules|test' --fail-none --json ../work-slither.json
+        working-directory: contracts
+      - run: python scripts/check-slither.py work-slither.json
+      - run: npx playwright install --with-deps chromium
+      - name: Local chain and browser integration
+        run: |
+          anvil --host 127.0.0.1 --timestamp 1791504000 --silent > /tmp/atlas-anvil.log 2>&1 &
+          sleep 2
+          npm run demo
+          npm run api > /tmp/atlas-api.log 2>&1 &
+          npx next start apps/web --hostname 127.0.0.1 > /tmp/atlas-web.log 2>&1 &
+          sleep 3
+          npm run test:e2e
+          npm run demo:redeem
+          curl --fail http://127.0.0.1:3001/api/snapshot > /tmp/atlas-final.json
+          node -e 'const s=JSON.parse(require("fs").readFileSync("/tmp/atlas-final.json")); if(s.asset.supply!=="0"||!s.reconciliation.ok)process.exit(1)'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-evidence
+          path: |
+            work-slither.json
+            test-results/
+            docs/screenshots/

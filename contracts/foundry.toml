@@ -1,0 +1,20 @@
+[profile.default]
+src = "src"
+libs = ["node_modules"]
+allow_paths = ["node_modules"]
+test = "test"
+solc_version = "0.8.30"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+remappings = ["@openzeppelin/=node_modules/@openzeppelin/"]
+[fuzz]
+runs = 256
+[invariant]
+runs = 128
+depth = 64
+fail_on_revert = false
+
+# Portable deployment bytecode: avoids post-Paris opcodes on custom EVM chains.
+[profile.portable]
+evm_version = "paris"

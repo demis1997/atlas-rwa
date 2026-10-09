@@ -1,0 +1,69 @@
+'forge clean' running (wd: /Users/demis/Documents/Codex/2026-10-09/files-pasted-by-the-user-atlas/outputs/atlas-rwa/contracts)
+'forge config --json' running
+'forge build --build-info --skip ./test/** ./script/** --force' running (wd: /Users/demis/Documents/Codex/2026-10-09/files-pasted-by-the-user-atlas/outputs/atlas-rwa/contracts)
+
+DvP.execute(uint256) (src/DvP.sol#86-101) uses arbitrary from in transferFrom: payment.safeTransferFrom(i.buyer,i.seller,i.consideration) (src/DvP.sol#94)
+DvP.execute(uint256) (src/DvP.sol#86-101) uses arbitrary from in transferFrom: IERC20(address(security)).safeTransferFrom(i.seller,i.buyer,i.quantity) (src/DvP.sol#93)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#arbitrary-from-in-transferfrom
+
+BondOffering.subscribe(uint256) (src/BondOffering.sol#108-126) uses a dangerous strict equality:
+	- require(bool,string)(payment.balanceOf(address(this)) - beforeBalance == amount,unsupported payment) (src/BondOffering.sol#124)
+CorporateActions._fund(uint256) (src/CorporateActions.sol#48-52) uses a dangerous strict equality:
+	- require(bool,string)(payment.balanceOf(address(this)) - beforeBalance == amount,unsupported payment) (src/CorporateActions.sol#51)
+DvP.execute(uint256) (src/DvP.sol#86-101) uses a dangerous strict equality:
+	- require(bool,string)(payment.balanceOf(i.seller) == sellerCash + i.consideration && payment.balanceOf(i.buyer) == buyerCash - i.consideration,payment mismatch) (src/DvP.sol#95-99)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+SecurityToken._update(address,address,uint256) (src/SecurityToken.sol#136-146) ignores return value by subjectHistory[fromSubject].push(block.number.toUint48(),balanceOf(from).toUint208()) (src/SecurityToken.sol#140)
+SecurityToken._update(address,address,uint256) (src/SecurityToken.sol#136-146) ignores return value by subjectHistory[identityRegistry.subjectOf(to)].push(block.number.toUint48(),balanceOf(to).toUint208()) (src/SecurityToken.sol#142)
+SecurityToken._update(address,address,uint256) (src/SecurityToken.sol#136-146) ignores return value by supplyHistory.push(block.number.toUint48(),totalSupply().toUint208()) (src/SecurityToken.sol#144)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Compliance.canTransfer(address,address,address,uint256) (src/Compliance.sol#37-43) has external calls inside a loop: ! rules[i].check(token,from,to,amount) (src/Compliance.sol#40)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+BondOffering.constructor(SecurityToken,IERC20,address,address,address,address,uint256,uint64) (src/BondOffering.sol#60-86) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(address(security_).code.length > 0 && address(payment_).code.length > 0 && treasury_ != address(0) && price_ > 0 && maturity_ > block.timestamp,terms) (src/BondOffering.sol#70-74)
+BondOffering.open() (src/BondOffering.sol#98-101) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(state == State.Approved && block.timestamp < maturity,state) (src/BondOffering.sol#99)
+BondOffering.subscribe(uint256) (src/BondOffering.sol#108-126) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(state == State.SubscriptionOpen && block.timestamp < maturity && quantity > 0 && quantity <= security.authorizedSupply(),subscription) (src/BondOffering.sol#109-113)
+BondOffering.settle(address) (src/BondOffering.sol#149-160) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(state == State.Allocated && s.status == Status.Allocated && block.timestamp < maturity,state) (src/BondOffering.sol#151)
+BondOffering.reclaimUnsettled() (src/BondOffering.sol#179-192) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(state == State.Cancelled || block.timestamp >= maturity,state) (src/BondOffering.sol#181)
+BondOffering.activate() (src/BondOffering.sol#208-211) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(state == State.Issued && block.timestamp < maturity,state) (src/BondOffering.sol#209)
+BondOffering.mature() (src/BondOffering.sol#213-216) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(state == State.Active && block.timestamp >= maturity,state) (src/BondOffering.sol#214)
+LockupRule.check(address,address,address,uint256) (src/Compliance.sol#98-100) uses timestamp for comparisons
+	Dangerous comparisons:
+	- from == address(0) || block.timestamp >= releaseTime (src/Compliance.sol#99)
+DvP.propose(address,uint256,uint256,uint64) (src/DvP.sol#55-66) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(buyer != address(0) && buyer != msg.sender && quantity > 0 && consideration > 0 && expiry > block.timestamp,instruction) (src/DvP.sol#59-62)
+DvP.accept(uint256) (src/DvP.sol#68-73) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(i.buyer == msg.sender && i.status == Status.Proposed && block.timestamp < i.expiry,authorization) (src/DvP.sol#70)
+DvP.execute(uint256) (src/DvP.sol#86-101) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(i.status == Status.Accepted && block.timestamp < i.expiry,state) (src/DvP.sol#88)
+IdentityRegistry.attest(bytes32,uint256,uint64,bytes32) (src/IdentityRegistry.sol#74-81) uses timestamp for comparisons
+	Dangerous comparisons:
+	- subjectWallet[subject] == address(0) || expiresAt <= block.timestamp || evidenceHash == bytes32(0) (src/IdentityRegistry.sol#76)
+IdentityRegistry.isVerified(address) (src/IdentityRegistry.sol#113-121) uses timestamp for comparisons
+	Dangerous comparisons:
+	- claim.expiresAt <= block.timestamp || ! trustedIssuer[claim.issuer][requiredTopics[i]] (src/IdentityRegistry.sol#118)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Loop condition i < requiredTopics.length (src/IdentityRegistry.sol#116) should use cached array length instead of referencing `length` member of the storage array.
+ Loop condition i < rules.length (src/Compliance.sol#39) should use cached array length instead of referencing `length` member of the storage array.
+ Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#cache-array-length
+. analyzed (34 contracts with 100 detectors), 24 result(s) found

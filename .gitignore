@@ -1,0 +1,20 @@
+node_modules/
+contracts/out/
+contracts/cache/
+.env
+.next/
+coverage/
+**/.next/
+*.tsbuildinfo
+test-results/
+playwright-report/
+work/
+
+# Network deployment receipts and local signing material
+contracts/broadcast/
+deployments/
+.env.*
+!.env.example
+keystores/
+*.key
+work-slither.json

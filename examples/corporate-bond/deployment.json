@@ -1,0 +1,28 @@
+{
+  "chainId": 31337,
+  "deployedAt": 0,
+  "contracts": {
+    "IdentityRegistry": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "Compliance": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    "AssetFactory": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+    "SecurityToken": "0xdcD7D9d33b464eD74706Dca9b8d86761cD88E57d",
+    "MockEUR": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+    "BondOffering": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+    "DvP": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+    "CorporateActions": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
+  },
+  "investors": [
+    {
+      "wallet": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+      "label": "Northstar Pension (synthetic)"
+    },
+    {
+      "wallet": "0x976EA74026E726554dB657fA54763abd0C3a0aa9",
+      "label": "Harbor Credit Fund (synthetic)"
+    },
+    {
+      "wallet": "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+      "label": "Restricted Investor (synthetic)"
+    }
+  ]
+}
